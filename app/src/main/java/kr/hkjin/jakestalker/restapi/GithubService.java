@@ -1,5 +1,8 @@
 package kr.hkjin.jakestalker.restapi;
 
+import java.util.List;
+
+import kr.hkjin.jakestalker.restapi.model.Repository;
 import kr.hkjin.jakestalker.restapi.model.User;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,4 +17,7 @@ public interface GithubService {
 
     @GET("users/{username}")
     Call<User> getUser(@Path("username") String username);
+
+    @GET("users/{username}/repos")
+    Call<List<Repository>> getRepository(@Path("username") String username);
 }

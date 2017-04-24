@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,8 +23,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-//    public static final String USERNAME = "jakewharton";
-    public static final String USERNAME = "hkjin81";
+    public static final String USERNAME = "jakewharton";
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -45,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-//        setProfileImage("https://avatars2.githubusercontent.com/u/66577?v=3&s=120");
         requestUser();
-        initListeners();
     }
 
     private void requestUser() {
@@ -113,38 +109,11 @@ public class MainActivity extends AppCompatActivity {
                 .into(profileImageView);
     }
 
-    private void initListeners() {
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.this.onDrawerItemClick(v);
-            }
-        };
-
-        findViewById(R.id.nav_company).setOnClickListener(listener);
-        findViewById(R.id.nav_location).setOnClickListener(listener);
-        findViewById(R.id.nav_blog).setOnClickListener(listener);
-        findViewById(R.id.nav_followers).setOnClickListener(listener);
-        findViewById(R.id.nav_following).setOnClickListener(listener);
-        findViewById(R.id.nav_repositories).setOnClickListener(listener);
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
         drawerLayout.closeDrawer(GravityCompat.START, false);
-    }
-
-    public void onDrawerItemClick(View item) {
-        switch (item.getId()) {
-            case R.id.nav_blog: {
-                {
-                    closeDrawer();
-                }
-                break;
-            }
-
-        }
     }
 
     public boolean isDrawerOpen() {
