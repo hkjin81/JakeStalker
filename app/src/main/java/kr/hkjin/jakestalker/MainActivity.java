@@ -6,6 +6,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
@@ -13,8 +15,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import kr.hkjin.jakestalker.restapi.GithubService;
 import kr.hkjin.jakestalker.restapi.ServiceGenerator;
+import kr.hkjin.jakestalker.restapi.model.Repository;
 import kr.hkjin.jakestalker.restapi.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private User user;
+    private RecyclerView listview;
+    private RepositoryListAdapter adapter;
+    private List<RepositoryItem> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +53,15 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        listview = (RecyclerView) findViewById(R.id.list);
+
+        adapter = new RepositoryListAdapter(this);
+        listview.setAdapter(adapter);
+        listview.setLayoutManager(new LinearLayoutManager(this));
+
         requestUser();
+        requestRepositories();
     }
 
     private void requestUser() {
@@ -53,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "HKCP success!");
                     user = response.body();
                     setProfile(user);
                 }
@@ -67,6 +84,41 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, String.format("HKCP requestUser failed: %s", t.toString()));
             }
         });
+    }
+
+    private void requestRepositories() {
+        GithubService gitHubService = ServiceGenerator.createService(GithubService.class);
+        Call<List<Repository>> call = gitHubService.getRepository(USERNAME);
+        call.enqueue(new Callback<List<Repository>>() {
+            @Override
+            public void onResponse(Call<List<Repository>> call, Response<List<Repository>> response) {
+                if (response.isSuccessful()) {
+                    convertToStarSortedList(response.body(), items);
+                    adapter.setItems(items);
+                }
+                else {
+                    Log.d(TAG, String.format("HKCP error: %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Repository>> call, Throwable t) {
+                Log.d(TAG, String.format("HKCP requestRepo failed: %s", t.toString()));
+            }
+        });
+    }
+
+    private void convertToStarSortedList(List<Repository> repoList, List<RepositoryItem> itemList) {
+        itemList.clear();
+        Collections.sort(repoList, new RepositoryComparator());
+        for (Repository repository : repoList) {
+            RepositoryItem item = new RepositoryItem();
+            item.title = repository.getName();
+            item.imageUrl = repository.getOwner().getAvatarUrl();
+            item.description = repository.getDescription();
+            item.setStarCount(repository.getStargazersCount());
+            items.add(item);
+        }
     }
 
     private void setProfile(User user) {
@@ -144,4 +196,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+
 }
