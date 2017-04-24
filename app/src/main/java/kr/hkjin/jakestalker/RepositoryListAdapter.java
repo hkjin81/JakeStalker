@@ -86,7 +86,7 @@ public class RepositoryListAdapter extends RecyclerView.Adapter {
                     Picasso.with(mInflator.getContext())
                             .load(item.imageUrl)
                             .placeholder(R.drawable.shape_item_placeholder)
-                            .error(R.drawable.ic_menu_gallery)
+                            .error(R.drawable.ic_item_load_error)
                             .resizeDimen(R.dimen.profile_image_size, R.dimen.profile_image_size)
                             .centerCrop()
                             .transform(transform)
