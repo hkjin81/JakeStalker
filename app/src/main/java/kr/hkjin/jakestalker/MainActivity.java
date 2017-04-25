@@ -1,10 +1,12 @@
 package kr.hkjin.jakestalker;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -201,6 +203,20 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
 
     @Override
     public void onItemClicked(RepositoryItem item, int position) {
-        Log.d(TAG, String.format("HKCP homepage url: %s", item.homepageUrl));
+        if (item.homepageUrl.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("No Homepage")
+                    .setMessage("This repository does not have any homepage.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setIcon(R.drawable.ic_sorry)
+                    .show();
+        }
+        else {
+            Log.d(TAG, String.format("HKCP homepage url: %s", item.homepageUrl));
+            Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
+            intent.putExtra("title", item.title);
+            intent.putExtra("url", item.homepageUrl);
+            startActivity(intent);
+        }
     }
 }

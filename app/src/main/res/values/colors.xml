@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorPinkPrimary">#FF4081</color>
+    <color name="colorPinkPrimaryDark">#a62954</color>
+    <color name="colorPinkAccent">#2fbabe</color>
     <color name="lightGray">#CCCCCC</color>
     <color name="drawer_number_bg">#086e3f</color>
 </resources>
