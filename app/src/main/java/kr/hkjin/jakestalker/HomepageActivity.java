@@ -1,7 +1,9 @@
 package kr.hkjin.jakestalker;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class HomepageActivity extends AppCompatActivity {
-    public final String INTENT_EXTRA_URL = "url";
+    public static final String INTENT_EXTRA_URL = "url";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,28 +26,29 @@ public class HomepageActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.webview_title);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
 
-
         String url = getIntent().getStringExtra(INTENT_EXTRA_URL);
         WebView webView = (WebView)findViewById(R.id.webView);
         if (url.isEmpty() == false) {
             try {
                 setDomain(getDomainName(url));
+
+                webView.loadUrl(url);
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                        showLoading(true);
+                    }
+
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        showLoading(false);
+                        setTitle(view.getTitle());
+                    }
+                });
             } catch (URISyntaxException e) {
+                showErrorDialog(getString(R.string.uri_syntax_error));
                 e.printStackTrace();
             }
-            webView.loadUrl(url);
-            webView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                    showLoading(true);
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    showLoading(false);
-                    setTitle(view.getTitle());
-                }
-            });
         }
     }
 
@@ -87,5 +90,19 @@ public class HomepageActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.loading).setVisibility(visibility);
+    }
+
+    private void showErrorDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.error)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(R.drawable.ic_sorry)
+                .show();
     }
 }

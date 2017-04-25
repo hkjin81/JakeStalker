@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,14 +80,15 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
                     setProfile(user);
                 }
                 else {
-                    Log.d(TAG, String.format("HKCP error: %d", response.code()));
+                    showErrorResponseDialog(response.code());
                 }
                 showActionBarLoading(false);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, String.format("HKCP requestUser failed: %s", t.toString()));
+                showNetworkErrorDialog();
+                Log.e(TAG, String.format("requestUser() failed: %s", t.toString()));
                 showActionBarLoading(false);
             }
         });
@@ -107,14 +106,15 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
                     adapter.setItems(items);
                 }
                 else {
-                    Log.d(TAG, String.format("HKCP error: %d", response.code()));
+                    showErrorResponseDialog(response.code());
                 }
                 showLoading(false);
             }
 
             @Override
             public void onFailure(Call<List<Repository>> call, Throwable t) {
-                Log.d(TAG, String.format("HKCP requestRepo failed: %s", t.toString()));
+                showNetworkErrorDialog();
+                Log.e(TAG, String.format("requestRepositories() failed: %s", t.toString()));
                 showLoading(false);
             }
         });
@@ -214,17 +214,15 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
     public void onItemClicked(RepositoryItem item, int position) {
         if (item.homepageUrl == null || item.homepageUrl.isEmpty()) {
             new AlertDialog.Builder(this)
-                    .setTitle("No Homepage")
-                    .setMessage("This repository does not have any homepage.")
+                    .setTitle(R.string.no_homepage_title)
+                    .setMessage(R.string.no_homepage_message)
                     .setPositiveButton(android.R.string.ok, null)
                     .setIcon(R.drawable.ic_sorry)
                     .show();
         }
         else {
-            Log.d(TAG, String.format("HKCP homepage url: %s", item.homepageUrl));
             Intent intent = new Intent(getBaseContext(), HomepageActivity.class);
-            intent.putExtra("title", item.title);
-            intent.putExtra("url", item.homepageUrl);
+            intent.putExtra(HomepageActivity.INTENT_EXTRA_URL, item.homepageUrl);
             startActivity(intent);
         }
     }
@@ -251,5 +249,23 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
         }
 
         findViewById(R.id.toolbar_progress_bar).setVisibility(visibility);
+    }
+
+    private void showNetworkErrorDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.network_error_title)
+                .setMessage(getString(R.string.network_error_message))
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(R.drawable.ic_sorry)
+                .show();
+    }
+
+    private void showErrorResponseDialog(int code) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.error_response_title)
+                .setMessage(getString(R.string.error_response_message, code))
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(R.drawable.ic_sorry)
+                .show();
     }
 }

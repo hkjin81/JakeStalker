@@ -13,4 +13,12 @@
     <string name="following">Following</string>
     <string name="repositories">Repositories</string>
     <string name="star_count">Star Count : </string>
+    <string name="error_response_message">Request failed with error code: %1$d</string>
+    <string name="error_response_title">Error Response</string>
+    <string name="network_error_title">Network Error</string>
+    <string name="network_error_message">A network error has occurred.</string>
+    <string name="no_homepage_title">No Homepage</string>
+    <string name="no_homepage_message">This repository does not have any homepage.</string>
+    <string name="uri_syntax_error">Homepage URL is not valid.</string>
+    <string name="error">Error</string>
 </resources>
