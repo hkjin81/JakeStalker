@@ -30,21 +30,27 @@ public class HomepageActivity extends AppCompatActivity {
         WebView webView = (WebView)findViewById(R.id.webView);
         if (url.isEmpty() == false) {
             try {
-                setDomain(getDomainName(url));
+                String domain = getDomainName(url);
+                if (domain != null && domain.isEmpty() == false) {
+                    setDomain(domain);
 
-                webView.loadUrl(url);
-                webView.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                        showLoading(true);
-                    }
+                    webView.loadUrl(url);
+                    webView.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                            showLoading(true);
+                        }
 
-                    @Override
-                    public void onPageFinished(WebView view, String url) {
-                        showLoading(false);
-                        setTitle(view.getTitle());
-                    }
-                });
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            showLoading(false);
+                            setTitle(view.getTitle());
+                        }
+                    });
+                }
+                else {
+                    showErrorDialog(getString(R.string.uri_syntax_error));
+                }
             } catch (URISyntaxException e) {
                 showErrorDialog(getString(R.string.uri_syntax_error));
                 e.printStackTrace();
@@ -77,7 +83,12 @@ public class HomepageActivity extends AppCompatActivity {
     public static String getDomainName(String url) throws URISyntaxException {
         URI uri = new URI(url);
         String domain = uri.getHost();
-        return domain.startsWith("www.") ? domain.substring(4) : domain;
+        if (domain != null) {
+            return domain.startsWith("www.") ? domain.substring(4) : domain;
+        }
+        else {
+            return "";
+        }
     }
 
     private void showLoading(boolean show) {
