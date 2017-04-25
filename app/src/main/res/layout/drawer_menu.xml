@@ -30,9 +30,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_group"/>
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_company" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -70,9 +70,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_group"/>
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_menu_location" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -110,9 +110,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_group"/>
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_menu_blog" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -150,9 +150,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_group"/>
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_menu_group" />
 
             <TextView
                 android:text="@string/followers"
@@ -200,9 +200,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_group"/>
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_following" />
 
             <TextView
                 android:text="@string/following"
@@ -250,9 +250,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_group"/>
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_storage" />
 
             <TextView
                 android:text="@string/repositories"

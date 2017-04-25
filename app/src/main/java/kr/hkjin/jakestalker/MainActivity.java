@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
     }
 
     private void requestUser() {
+        showActionBarLoading(true);
         GithubService gitHubService = ServiceGenerator.createService(GithubService.class);
         Call<User> call = gitHubService.getUser(USERNAME);
         call.enqueue(new Callback<User>() {
@@ -80,16 +84,19 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
                 else {
                     Log.d(TAG, String.format("HKCP error: %d", response.code()));
                 }
+                showActionBarLoading(false);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.d(TAG, String.format("HKCP requestUser failed: %s", t.toString()));
+                showActionBarLoading(false);
             }
         });
     }
 
     private void requestRepositories() {
+        showLoading(true);
         GithubService gitHubService = ServiceGenerator.createService(GithubService.class);
         Call<List<Repository>> call = gitHubService.getRepository(USERNAME);
         call.enqueue(new Callback<List<Repository>>() {
@@ -102,11 +109,13 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
                 else {
                     Log.d(TAG, String.format("HKCP error: %d", response.code()));
                 }
+                showLoading(false);
             }
 
             @Override
             public void onFailure(Call<List<Repository>> call, Throwable t) {
                 Log.d(TAG, String.format("HKCP requestRepo failed: %s", t.toString()));
+                showLoading(false);
             }
         });
     }
@@ -218,5 +227,29 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
             intent.putExtra("url", item.homepageUrl);
             startActivity(intent);
         }
+    }
+
+    private void showLoading(boolean show) {
+        int visibility;
+        if (show) {
+            visibility = View.VISIBLE;
+        }
+        else {
+            visibility = View.INVISIBLE;
+        }
+
+        findViewById(R.id.loading).setVisibility(visibility);
+    }
+
+    private void showActionBarLoading(boolean show) {
+        int visibility;
+        if (show) {
+            visibility = View.VISIBLE;
+        }
+        else {
+            visibility = View.INVISIBLE;
+        }
+
+        findViewById(R.id.toolbar_progress_bar).setVisibility(visibility);
     }
 }
