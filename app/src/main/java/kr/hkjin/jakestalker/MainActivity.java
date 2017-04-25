@@ -1,5 +1,6 @@
 package kr.hkjin.jakestalker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -251,21 +252,39 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
         findViewById(R.id.toolbar_progress_bar).setVisibility(visibility);
     }
 
+    private AlertDialog networkErrorDialog = null;
     private void showNetworkErrorDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.network_error_title)
-                .setMessage(getString(R.string.network_error_message))
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(R.drawable.ic_sorry)
-                .show();
+        if (networkErrorDialog == null) {
+            networkErrorDialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.network_error_title)
+                    .setMessage(getString(R.string.network_error_message))
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            networkErrorDialog = null;
+                        }
+                    })
+                    .setIcon(R.drawable.ic_sorry)
+                    .show();
+        }
     }
 
+    private AlertDialog errorResponseDialog = null;
     private void showErrorResponseDialog(int code) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.error_response_title)
-                .setMessage(getString(R.string.error_response_message, code))
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(R.drawable.ic_sorry)
-                .show();
+        if (errorResponseDialog == null) {
+            errorResponseDialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.error_response_title)
+                    .setMessage(getString(R.string.error_response_message, code))
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            errorResponseDialog = null;
+                        }
+                    })
+                    .setIcon(R.drawable.ic_sorry)
+                    .show();
+        }
     }
 }

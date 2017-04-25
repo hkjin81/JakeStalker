@@ -46,13 +46,14 @@
                     android:textSize="18dp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>
+
                 <TextView
                     android:id="@+id/company"
-                    android:text="Square, Inc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="18dp"
-                    android:textColor="@android:color/black"/>
+                    tools:text="Square, Inc" />
             </LinearLayout>
 
         </LinearLayout>
@@ -86,13 +87,14 @@
                     android:textSize="18dp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>
+
                 <TextView
                     android:id="@+id/location"
-                    android:text="USA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="18dp"
-                    android:textColor="@android:color/black"/>
+                    tools:text="USA" />
             </LinearLayout>
 
         </LinearLayout>
@@ -126,13 +128,14 @@
                     android:textSize="18dp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>
+
                 <TextView
                     android:id="@+id/blog"
-                    android:text="http://jake.com"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="18dp"
-                    android:textColor="@android:color/black"/>
+                    tools:text="http://jake.com" />
             </LinearLayout>
 
         </LinearLayout>
@@ -168,17 +171,17 @@
                 android:id="@+id/followers_count"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
+                android:background="@color/drawer_number_bg"
+                android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="345"
-                android:textSize="18dp"
+                android:text="-"
                 android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:textSize="18dp"
                 android:textStyle="bold"
-                android:background="@color/drawer_number_bg"
-                />
+                tools:text="3456" />
 
             <Space
                 android:layout_width="0dp"
@@ -218,17 +221,17 @@
                 android:id="@+id/following_count"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
+                android:background="@color/drawer_number_bg"
+                android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="345"
-                android:textSize="18dp"
+                android:text="-"
                 android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:textSize="18dp"
                 android:textStyle="bold"
-                android:background="@color/drawer_number_bg"
-                />
+                tools:text="123" />
 
             <Space
                 android:layout_width="0dp"
@@ -268,17 +271,17 @@
                 android:id="@+id/repositories_count"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
+                android:background="@color/drawer_number_bg"
+                android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="345"
-                android:textSize="18dp"
+                android:text="-"
                 android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:textSize="18dp"
                 android:textStyle="bold"
-                android:background="@color/drawer_number_bg"
-                />
+                tools:text="78" />
 
             <Space
                 android:layout_width="0dp"
