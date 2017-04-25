@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryListAda
 
     @Override
     public void onItemClicked(RepositoryItem item, int position) {
-        if (item.homepageUrl.isEmpty()) {
+        if (item.homepageUrl == null || item.homepageUrl.isEmpty()) {
             new AlertDialog.Builder(this)
                     .setTitle("No Homepage")
                     .setMessage("This repository does not have any homepage.")

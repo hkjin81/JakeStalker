@@ -37,11 +37,12 @@ public class HomepageActivity extends AppCompatActivity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
+                    showLoading(true);
                 }
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
+                    showLoading(false);
                     setTitle(view.getTitle());
                 }
             });
@@ -74,5 +75,17 @@ public class HomepageActivity extends AppCompatActivity {
         URI uri = new URI(url);
         String domain = uri.getHost();
         return domain.startsWith("www.") ? domain.substring(4) : domain;
+    }
+
+    private void showLoading(boolean show) {
+        int visibility;
+        if (show) {
+            visibility = View.VISIBLE;
+        }
+        else {
+            visibility = View.INVISIBLE;
+        }
+
+        findViewById(R.id.loading).setVisibility(visibility);
     }
 }
