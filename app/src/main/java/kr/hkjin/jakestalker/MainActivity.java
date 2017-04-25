@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RepositoryListAdapter.Delegate {
     private static final String TAG = "MainActivity";
 
     public static final String USERNAME = "jakewharton";
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         listview = (RecyclerView) findViewById(R.id.list);
 
         adapter = new RepositoryListAdapter(this);
+        adapter.setDelegate(this);
         listview.setAdapter(adapter);
         listview.setLayoutManager(new LinearLayoutManager(this));
 
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             item.imageUrl = repository.getOwner().getAvatarUrl();
             item.description = repository.getDescription();
             item.setStarCount(repository.getStargazersCount());
+            item.homepageUrl = repository.getHomepage();
             items.add(item);
         }
     }
@@ -197,5 +199,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onItemClicked(RepositoryItem item, int position) {
+        Log.d(TAG, String.format("HKCP homepage url: %s", item.homepageUrl));
+    }
 }

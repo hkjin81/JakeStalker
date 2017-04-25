@@ -14,27 +14,40 @@ import java.util.List;
  * Created by hkjin81 on 2017. 4. 25..
  */
 
-public class RepositoryListAdapter extends RecyclerView.Adapter {
+public class RepositoryListAdapter extends RecyclerView.Adapter
+        implements RepositoryItemViewHolder.Delegate {
     public static final int ITEMTYPE_NONE = 0;
     public static final int ITEMTYPE_ITEM = 1;
     public static final int ITEMTYPE_LAST = 2;
+    public static final float DEFAULT_RADIUS_X = 16f;
+    public static final float DEFAULT_RADIUS_Y = 16f;
 
-    private LayoutInflater mInflator;
+    public interface Delegate {
+        void onItemClicked(RepositoryItem item, int position);
+    }
+
+    private LayoutInflater inflator;
     private List<RepositoryItem> items;
-    private static final RoundedRectTransform transform = new RoundedRectTransform(16f, 16f);
+    private static final RoundedRectTransform transform =
+            new RoundedRectTransform(DEFAULT_RADIUS_X, DEFAULT_RADIUS_Y);
+    private Delegate delegate;
 
     public RepositoryListAdapter(Context context) {
-        mInflator = LayoutInflater.from(context);
+        inflator = LayoutInflater.from(context);
     }
 
     public RepositoryListAdapter(Context context, List<RepositoryItem> items) {
-        mInflator = LayoutInflater.from(context);
+        inflator = LayoutInflater.from(context);
         this.items = items;
     }
 
     public void setItems(List<RepositoryItem> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    public void setDelegate(Delegate delegate) {
+        this.delegate = delegate;
     }
 
     @Override
@@ -62,12 +75,13 @@ public class RepositoryListAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder viewHolder = null;
         switch (viewType) {
             case ITEMTYPE_ITEM: {
-                View view = mInflator.inflate(R.layout.repo_item_view, parent, false);
+                View view = inflator.inflate(R.layout.repo_item_view, parent, false);
                 viewHolder = new RepositoryItemViewHolder(view);
+                ((RepositoryItemViewHolder)viewHolder).setDelegate(this);
                 break;
             }
             case ITEMTYPE_LAST: {
-                View view = mInflator.inflate(R.layout.last_item_view, parent, false);
+                View view = inflator.inflate(R.layout.last_item_view, parent, false);
                 viewHolder = new LastItemViewHolder(view);
                 break;
             }
@@ -83,7 +97,7 @@ public class RepositoryListAdapter extends RecyclerView.Adapter {
                 RepositoryItemViewHolder vh = (RepositoryItemViewHolder)holder;
                 RepositoryItem item = items.get(position);
                 if (item.imageUrl.isEmpty() == false) {
-                    Picasso.with(mInflator.getContext())
+                    Picasso.with(inflator.getContext())
                             .load(item.imageUrl)
                             .placeholder(R.drawable.shape_item_placeholder)
                             .error(R.drawable.ic_item_load_error)
@@ -115,6 +129,16 @@ public class RepositoryListAdapter extends RecyclerView.Adapter {
         }
         else {
             return 0;
+        }
+    }
+
+    @Override
+    public void onItemClicked(RepositoryItemViewHolder viewHolder) {
+        if (delegate != null) {
+            int position = viewHolder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                delegate.onItemClicked(items.get(position), position);
+            }
         }
     }
 }

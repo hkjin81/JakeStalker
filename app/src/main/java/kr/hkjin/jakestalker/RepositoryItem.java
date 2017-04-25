@@ -8,6 +8,7 @@ public class RepositoryItem {
     public String imageUrl = "";
     public String title = "Title";
     public String description = "Description";
+    public String homepageUrl = "";
     private String starCountText = "Star Count : 0";
     private int starCount = 0;
 
